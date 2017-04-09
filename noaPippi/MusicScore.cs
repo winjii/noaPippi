@@ -13,7 +13,7 @@ namespace noaPippi
     /// </summary>
     class MusicScore : SeparatedComponent
     {
-        private Texture2D black;
+        private VertexPositionColor staffNotation;
         public MusicScore(Game game, Viewport viewport, SpriteBatch spriteBatch) : base(game, viewport, spriteBatch)
         {
 
@@ -21,8 +21,8 @@ namespace noaPippi
         protected override void LoadContent()
         {
             base.LoadContent();
+            
 
-            black = Game.Content.Load<Texture2D>("black");
         }
 
         protected override void separatelyDraw(GameTime gameTime, SpriteBatch spriteBatch)
