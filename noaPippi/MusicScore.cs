@@ -13,11 +13,10 @@ namespace noaPippi
     /// </summary>
     class MusicScore : SeparatedComponent
     {
-        private SpriteBatch spriteBatch;
         private Texture2D black;
-        public MusicScore(Game game, GraphicsDevice graphicsDevice) : base(game)
+        public MusicScore(Game game, Viewport viewport, SpriteBatch spriteBatch) : base(game, viewport, spriteBatch)
         {
-            spriteBatch = new SpriteBatch(graphicsDevice);
+
         }
         protected override void LoadContent()
         {
