@@ -26,7 +26,7 @@ namespace noaPippi
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            Components.Add(new MusicScore(this, graphics.GraphicsDevice));
 
             base.Initialize();
         }
