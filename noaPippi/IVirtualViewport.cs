@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Graphics;
 namespace noaPippi
 {
     //TODO: 固定された表示領域と動的な表示領域のクラスを派生させたい
-    //TODO: クラスの多態性の実装で、継承を使うのがフィールドで型を持つのより何が優れているのか調べる
     abstract class IVirtualViewport
     {
         protected IVirtualViewport parent;
@@ -19,6 +18,7 @@ namespace noaPippi
         abstract public double GetRateOfHeight();
         public Viewport GetAbsoluteViewport()
         {
+            //TODO: parentがnullのときどうする？
             Viewport parentViewport = parent.GetAbsoluteViewport();
             return new Viewport(
                 (int)(parentViewport.X + parentViewport.Width*GetRateOfX() + 0.5),
