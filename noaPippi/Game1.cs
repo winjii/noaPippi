@@ -26,7 +26,7 @@ namespace noaPippi
         /// </summary>
         protected override void Initialize()
         {
-            Components.Add(new MusicScore(this, graphics.GraphicsDevice));
+            Components.Add(new MusicScore(this, graphics.GraphicsDevice.Viewport, spriteBatch));
 
             base.Initialize();
         }
