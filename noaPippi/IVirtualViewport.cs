@@ -16,9 +16,9 @@ namespace noaPippi
         abstract public double GetRateOfY();
         abstract public double GetRateOfWidth();
         abstract public double GetRateOfHeight();
+        public bool IsRoot() { return this == parent; }
         public Viewport GetAbsoluteViewport()
         {
-            //TODO: parentがnullのときどうする？
             Viewport parentViewport = parent.GetAbsoluteViewport();
             return new Viewport(
                 (int)(parentViewport.X + parentViewport.Width*GetRateOfX() + 0.5),
