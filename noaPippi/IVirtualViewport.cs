@@ -13,17 +13,18 @@ namespace noaPippi
     abstract class IVirtualViewport
     {
         protected IVirtualViewport parent;
-        public double GetRateOfX();
-        public double GetRateOfY();
-        public double GetRateOfWidth();
-        public double GetRateOfHeight();
+        abstract public double GetRateOfX();
+        abstract public double GetRateOfY();
+        abstract public double GetRateOfWidth();
+        abstract public double GetRateOfHeight();
         public Viewport GetAbsoluteViewport()
         {
+            Viewport parentViewport = parent.GetAbsoluteViewport();
             return new Viewport(
-                parent.X + parent.Width*GetRateOfX(),
-                parent.Y + parent.Height*GetRateOfY(),
-                parent.Width*GetRateOfWidth(),
-                parent.Height*GetRateOfHeight
+                (int)(parentViewport.X + parentViewport.Width*GetRateOfX() + 0.5),
+                (int)(parentViewport.Y + parentViewport.Height*GetRateOfY() + 0.5),
+                (int)(parentViewport.Width*GetRateOfWidth() + 0.5),
+                (int)(parentViewport.Height*GetRateOfHeight() + 0.5)
             );
         }
     }
