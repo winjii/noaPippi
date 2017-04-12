@@ -10,6 +10,10 @@ namespace noaPippi
 {
     class StaticViewport : IVirtualViewport
     {
+        public StaticViewport(Viewport viewport)
+        {
+            throw new NotImplementedException();
+        }
         public override double GetRateOfHeight()
         {
             throw new NotImplementedException();
