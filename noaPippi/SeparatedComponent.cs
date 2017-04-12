@@ -14,9 +14,9 @@ namespace noaPippi
     //TODO: VirtualViewportのサポート
     abstract class SeparatedComponent : DrawableGameComponent
     {
-        protected Viewport viewport;
+        protected IVirtualViewport viewport;
         private SpriteBatch spriteBatch;
-        public SeparatedComponent(Game game, Viewport viewport, SpriteBatch spriteBatch) : base(game)
+        public SeparatedComponent(Game game, IVirtualViewport viewport, SpriteBatch spriteBatch) : base(game)
         {
             this.viewport = viewport;
             this.spriteBatch = spriteBatch;
@@ -25,7 +25,7 @@ namespace noaPippi
         public override void Draw(GameTime gameTime)
         {
             Viewport tmp = spriteBatch.GraphicsDevice.Viewport;
-            spriteBatch.GraphicsDevice.Viewport = viewport;
+            spriteBatch.GraphicsDevice.Viewport = viewport.GetAbsoluteViewport();
             separatelyDraw(gameTime, spriteBatch);
             spriteBatch.GraphicsDevice.Viewport = tmp;
 
