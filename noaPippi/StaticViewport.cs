@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace noaPippi
 {
-    class StaticViewport : IVirtualViewport
+    class StaticViewport : VirtualViewport
     {
         public StaticViewport(Viewport viewport)
         {

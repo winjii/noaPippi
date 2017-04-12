@@ -14,9 +14,9 @@ namespace noaPippi
     //TODO: VirtualViewportのサポート
     abstract class SeparatedComponent : DrawableGameComponent
     {
-        protected IVirtualViewport viewport;
+        protected VirtualViewport viewport;
         private SpriteBatch spriteBatch;
-        public SeparatedComponent(Game game, IVirtualViewport viewport, SpriteBatch spriteBatch) : base(game)
+        public SeparatedComponent(Game game, VirtualViewport viewport, SpriteBatch spriteBatch) : base(game)
         {
             this.viewport = viewport;
             this.spriteBatch = spriteBatch;

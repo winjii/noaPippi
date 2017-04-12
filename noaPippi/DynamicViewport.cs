@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace noaPippi
 {
-    class DynamicViewport : IVirtualViewport
+    class DynamicViewport : VirtualViewport
     {
         public override double GetRateOfHeight()
         {

@@ -9,9 +9,9 @@ using Microsoft.Xna.Framework.Graphics;
 namespace noaPippi
 {
     //TODO: 固定された表示領域と動的な表示領域のクラスを派生させたい
-    abstract class IVirtualViewport
+    abstract class VirtualViewport
     {
-        protected IVirtualViewport parent;
+        protected VirtualViewport parent;
         abstract public double GetRateOfX();
         abstract public double GetRateOfY();
         abstract public double GetRateOfWidth();

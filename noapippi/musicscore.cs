@@ -14,7 +14,7 @@ namespace noaPippi
     class MusicScore : SeparatedComponent
     {
         private VertexPositionColor staffNotation;
-        public MusicScore(Game game, Viewport viewport, SpriteBatch spriteBatch) : base(game, viewport, spriteBatch)
+        public MusicScore(Game game, VirtualViewport viewport, SpriteBatch spriteBatch) : base(game, viewport, spriteBatch)
         {
 
         }
