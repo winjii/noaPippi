@@ -11,7 +11,6 @@ namespace noaPippi
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Line2DRenderer test;
 
         public Game1()
         {
@@ -38,7 +37,6 @@ namespace noaPippi
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            test = new Line2DRenderer(spriteBatch, Content);
             //Components.Add(new MusicScore(this, graphics.GraphicsDevice.Viewport, spriteBatch));
 
             // TODO: use this.Content to load your game content here
@@ -77,7 +75,6 @@ namespace noaPippi
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            test.Draw(new Vector2(50, 10), new Vector2(100, 200), 3, Color.Black);
             spriteBatch.End();
 
             base.Draw(gameTime);
