@@ -26,6 +26,14 @@ namespace noaPippi
         /// </summary>
         protected override void Initialize()
         {
+            RelativeViewport parent = new RelativeViewport.Root(
+                graphics.GraphicsDevice.Viewport.Width,
+                graphics.GraphicsDevice.Viewport.Height,
+                false
+                );
+            parent.AddChildren(0.5, false, false);
+            Components.Add(new MusicScore(this, parent.AddChildren(0.5, false, false)));
+
             base.Initialize();
         }
 
@@ -37,9 +45,6 @@ namespace noaPippi
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //Components.Add(new MusicScore(this, graphics.GraphicsDevice.Viewport, spriteBatch));
-
-            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>

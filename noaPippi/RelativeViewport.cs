@@ -20,11 +20,13 @@ namespace noaPippi
             IsHorizontal = isHorizontal;
         }
         
-        public void AddChildren(double rateOfLength, bool isHorizontal, bool isStatic)
+        public RelativeViewport AddChildren(double rateOfLength, bool isHorizontal, bool isStatic)
         {
-            double rateOfPos = children.Last().GetAbsolutePos() + children.Last().GetAbsoluteLength();
-            Children tmp = new Children(this, rateOfPos, rateOfLength, isHorizontal, isStatic);
-            children.Add(tmp);
+            double rateOfPos = (children.Count > 0) ?
+                children.Last().RateOfPos + children.Last().RateOfLength : 0;
+            Children res = new Children(this, rateOfPos, rateOfLength, isHorizontal, isStatic);
+            children.Add(res);
+            return res;
         }
         virtual public void Recalculate()
         {
@@ -48,7 +50,7 @@ namespace noaPippi
         }
 
 
-        class Children : RelativeViewport
+        public class Children : RelativeViewport
         {
             protected RelativeViewport parent;
             public bool IsStatic { get; set; }
@@ -95,7 +97,7 @@ namespace noaPippi
             }
         }
 
-        class Root : RelativeViewport
+        public class Root : RelativeViewport
         {
             private double absoluteWidth;
             private double absoluteHeight;

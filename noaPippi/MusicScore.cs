@@ -14,7 +14,7 @@ namespace noaPippi
     class MusicScore : SeparatedComponent
     {
         private VertexPositionColor staffNotation;
-        public MusicScore(Game game, RelativeViewport viewport, SpriteBatch spriteBatch) : base(game, viewport, spriteBatch)
+        public MusicScore(Game game, RelativeViewport viewport) : base(game, viewport)
         {
 
         }
@@ -22,12 +22,20 @@ namespace noaPippi
         {
             base.LoadContent();
             
-
         }
 
         protected override void separatelyDraw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            throw new NotImplementedException();
+            Line2DRenderer test = new Line2DRenderer(spriteBatch, Game.Content);
+            Vector2 p00 = new Vector2(0, 0);
+            Vector2 p01 = new Vector2((float)viewport.GetAbsoluteWidth(), 0);
+            Vector2 p10 = new Vector2(0, (float)viewport.GetAbsoluteHeight());
+            Vector2 p11 = new Vector2((float)viewport.GetAbsoluteWidth(), (float)viewport.GetAbsoluteHeight());
+            test.Draw(p00, p01, 10, Color.Red);
+            test.Draw(p01, p11, 10, Color.Red);
+            test.Draw(p11, p10, 10, Color.Red);
+            test.Draw(p10, p00, 10, Color.Red);
+            test.Draw(p01 + new Vector2(-10, 10), p10 + new Vector2(10, -10), 20, Color.Black);
         }
     }
 }
