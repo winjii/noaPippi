@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Game1.cs" />
+    <Compile Include="Line2DRenderer.cs" />
     <Compile Include="RelativeViewport.cs" />
     <Compile Include="MusicScore.cs" />
     <Compile Include="Program.cs" />
@@ -56,7 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\black.bmp" />
+    <Content Include="Content\white.bmp" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
