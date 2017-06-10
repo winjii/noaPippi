@@ -26,13 +26,13 @@ namespace noaPippi
         /// </summary>
         protected override void Initialize()
         {
-            RelativeViewport parent = new RelativeViewport.Root(
+            /*RelativeViewport parent = new RelativeViewport.Root(
                 graphics.GraphicsDevice.Viewport.Width,
                 graphics.GraphicsDevice.Viewport.Height,
                 false
                 );
             parent.AddChildren(0.5, false, false);
-            Components.Add(new MusicScore(this, parent.AddChildren(0.5, false, false)));
+            Components.Add(new MusicScore(this, parent.AddChildren(0.5, false, false)));*/
 
             base.Initialize();
         }
