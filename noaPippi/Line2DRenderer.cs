@@ -11,16 +11,20 @@ namespace noaPippi
 {
     class Line2DRenderer
     {
-        private SpriteBatch spriteBatch;
+        static public Line2DRenderer Instance { get; private set; }
+        static public Line2DRenderer InitializeInstance(ContentManager content)
+        {
+            return Instance = new Line2DRenderer(content);
+        }
+
         private Texture2D white;
 
-        public Line2DRenderer(SpriteBatch spriteBatch, ContentManager content)
+        private Line2DRenderer(ContentManager content)
         {
-            this.spriteBatch = spriteBatch;
             white = content.Load<Texture2D>("white");
         }
 
-        public void Draw(Vector2 p, Vector2 q, float thinkness, Color color)
+        public void Draw(SpriteBatch spriteBatch, Vector2 p, Vector2 q, float thinkness, Color color)
         {
             Vector2 pos = (p + q)/2;
             Vector2 center = new Vector2((float)white.Width/2, (float)white.Height/2);
