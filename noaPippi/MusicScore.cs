@@ -16,7 +16,7 @@ namespace noaPippi
         RelativeViewport staffNotationViewport;
         public MusicScore(Game game, RelativeViewport viewport) : base(game, viewport)
         {
-
+            staffNotationViewport = viewport.AddFreeChild(0.1, 0.1, 0.8, 0.8);
         }
         protected override void LoadContent()
         {
