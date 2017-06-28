@@ -8,7 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace noaPippi
 {
-    //TODO: 毎回再帰で描画領域を求めているのをメモ化で高速化
+    //TODO: 毎回再帰で描画領域を求めているのをメモ化で高速化(再計算は、Recalculateをオーバーライド)
+    //TODO: 列に並ばないタイプのRelativeViewportも追加したい
     abstract class RelativeViewport
     {
         private List<Children> children;
@@ -34,6 +35,14 @@ namespace noaPippi
             {
                 c.Recalculate();
             }
+        }
+        public double RateToAbsoluteX(double rateOfX)
+        {
+            return GetAbsoluteX() + rateOfX*GetAbsoluteWidth();
+        }
+        public double RateToAbsoluteY(double rateOfY)
+        {
+            return GetAbsoluteY() + rateOfY*GetAbsoluteHeight();
         }
         abstract public double GetAbsoluteX();
         abstract public double GetAbsoluteY();

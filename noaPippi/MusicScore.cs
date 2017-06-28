@@ -13,7 +13,7 @@ namespace noaPippi
     /// </summary>
     class MusicScore : SeparatedComponent
     {
-        private VertexPositionColor staffNotation;
+        RelativeViewport staffNotationViewport;
         public MusicScore(Game game, RelativeViewport viewport) : base(game, viewport)
         {
 
