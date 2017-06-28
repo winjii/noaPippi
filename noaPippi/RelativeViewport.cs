@@ -9,29 +9,43 @@ using Microsoft.Xna.Framework.Graphics;
 namespace noaPippi
 {
     //TODO: 毎回再帰で描画領域を求めているのをメモ化で高速化(再計算は、Recalculateをオーバーライド)
-    //TODO: 列に並ばないタイプのRelativeViewportも追加したい
+    //TODO: IsStaticを活用して大きさを変えない機能を実装
     abstract class RelativeViewport
     {
-        private List<Children> children;
+        private List<FormedChild> formedChildren;
+        private List<FreeChild> freeChildren;
         public bool IsHorizontal { get; set; }
 
         protected RelativeViewport(bool isHorizontal)
         {
-            children = new List<Children>();
+            formedChildren = new List<FormedChild>();
+            freeChildren = new List<FreeChild>();
             IsHorizontal = isHorizontal;
         }
+
+        protected RelativeViewport() : this(true) { }
         
-        public RelativeViewport AddChildren(double rateOfLength, bool isHorizontal, bool isStatic)
+        public RelativeViewport AddFormedChild(double rateOfLength, bool isHorizontal, bool isStatic)
         {
-            double rateOfPos = (children.Count > 0) ?
-                children.Last().RateOfPos + children.Last().RateOfLength : 0;
-            Children res = new Children(this, rateOfPos, rateOfLength, isHorizontal, isStatic);
-            children.Add(res);
+            double rateOfPos = (formedChildren.Count > 0) ?
+                formedChildren.Last().RateOfPos + formedChildren.Last().RateOfLength : 0;
+            FormedChild res = new FormedChild(this, rateOfPos, rateOfLength, isHorizontal, isStatic);
+            formedChildren.Add(res);
+            return res;
+        }
+        public RelativeViewport AddFreeChild(double rateOfX, double rateOfY, double rateOfWidth, double rateOfHeight)
+        {
+            FreeChild res = new FreeChild(this, rateOfX, rateOfY, rateOfWidth, rateOfHeight);
+            freeChildren.Add(res);
             return res;
         }
         virtual public void Recalculate()
         {
-            foreach (Children c in children)
+            foreach (FormedChild c in formedChildren)
+            {
+                c.Recalculate();
+            }
+            foreach (FreeChild c in freeChildren)
             {
                 c.Recalculate();
             }
@@ -58,15 +72,49 @@ namespace noaPippi
             );
         }
 
+        public class FreeChild : RelativeViewport
+        {
+            protected RelativeViewport parent;
+            public double RateOfX { get; }
+            public double RateOfY { get; }
+            public double RateOfWidth { get; }
+            public double RateOfHeight { get; }
 
-        public class Children : RelativeViewport
+            public FreeChild(RelativeViewport parent, double rateOfX, double rateOfY, double rateOfWidth, double rateOfHeight)
+            {
+                this.parent = parent;
+                RateOfX = rateOfX;
+                RateOfY = rateOfY;
+                RateOfWidth = rateOfWidth;
+                RateOfHeight = rateOfHeight;
+            }
+
+            public override double GetAbsoluteX()
+            {
+                return parent.GetAbsoluteX() + RateOfX*parent.GetAbsoluteWidth();
+            }
+            public override double GetAbsoluteY()
+            {
+                return parent.GetAbsoluteY() + RateOfY*parent.GetAbsoluteHeight();
+            }
+            public override double GetAbsoluteWidth()
+            {
+                return RateOfWidth*parent.GetAbsoluteWidth();
+            }
+            public override double GetAbsoluteHeight()
+            {
+                return RateOfHeight*parent.GetAbsoluteHeight();
+            }
+        }
+
+        public class FormedChild : RelativeViewport
         {
             protected RelativeViewport parent;
             public bool IsStatic { get; set; }
             public double RateOfPos { get; }
             public double RateOfLength { get; }
 
-            public Children(RelativeViewport parent, double rateOfPos, double rateOfLength, bool isHorizontal, bool isStatic) : base(isHorizontal)
+            public FormedChild(RelativeViewport parent, double rateOfPos, double rateOfLength, bool isHorizontal, bool isStatic) : base(isHorizontal)
             {
                 this.parent = parent??throw new ArgumentNullException();
                 RateOfPos = rateOfPos;
