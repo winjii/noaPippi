@@ -58,6 +58,14 @@ namespace noaPippi
         {
             return GetAbsoluteY() + rateOfY*GetAbsoluteHeight();
         }
+        public double RateToRelativeX(double rateOfX)
+        {
+            return rateOfX*GetAbsoluteWidth();
+        }
+        public double RateToRelativeY(double rateOfY)
+        {
+            return rateOfY*GetAbsoluteHeight();
+        }
         abstract public double GetAbsoluteX();
         abstract public double GetAbsoluteY();
         abstract public double GetAbsoluteWidth();

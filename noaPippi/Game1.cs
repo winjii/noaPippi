@@ -10,12 +10,19 @@ namespace noaPippi
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        MusicScore musicScore;
+        RelativeViewport root;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            root = new RelativeViewport.Root(
+                graphics.PreferredBackBufferWidth,
+                graphics.PreferredBackBufferHeight,
+                false);
+            musicScore = new MusicScore(this, root);
+            Components.Add(musicScore);
         }
 
         /// <summary>
@@ -26,13 +33,15 @@ namespace noaPippi
         /// </summary>
         protected override void Initialize()
         {
-            /*RelativeViewport parent = new RelativeViewport.Root(
+            /*
+            RelativeViewport parent = new RelativeViewport.Root(
                 graphics.GraphicsDevice.Viewport.Width,
                 graphics.GraphicsDevice.Viewport.Height,
                 false
                 );
-            parent.AddChildren(0.5, false, false);
-            Components.Add(new MusicScore(this, parent.AddChildren(0.5, false, false)));*/
+            parent.AddFormedChild(0.5, false, false);
+            Components.Add(new MusicScore(this, parent.AddFormedChild(0.5, false, false)));
+            */
 
             base.Initialize();
         }
@@ -44,7 +53,7 @@ namespace noaPippi
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            Line2DRenderer.InitializeInstance(Content);
         }
 
         /// <summary>
@@ -78,9 +87,6 @@ namespace noaPippi
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            spriteBatch.Begin();
-            spriteBatch.End();
 
             base.Draw(gameTime);
         }

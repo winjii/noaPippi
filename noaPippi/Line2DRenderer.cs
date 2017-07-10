@@ -11,10 +11,15 @@ namespace noaPippi
 {
     class Line2DRenderer
     {
-        static public Line2DRenderer Instance { get; private set; }
+        static private Line2DRenderer instance;
+        static public Line2DRenderer GetInstance()
+        {
+            if (instance == null) throw new NullReferenceException();
+            return instance;
+        }
         static public Line2DRenderer InitializeInstance(ContentManager content)
         {
-            return Instance = new Line2DRenderer(content);
+            return instance = new Line2DRenderer(content);
         }
 
         private Texture2D white;
