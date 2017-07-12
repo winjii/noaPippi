@@ -44,6 +44,7 @@
     <Compile Include="Clef.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Line2DRenderer.cs" />
+    <Compile Include="Midi\AfterTouch.cs" />
     <Compile Include="Midi\MidiIn.cs" />
     <Compile Include="Midi\MidiMessageParser.cs" />
     <Compile Include="Midi\NoteOn.cs" />
