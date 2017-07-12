@@ -44,7 +44,10 @@
     <Compile Include="Clef.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Line2DRenderer.cs" />
-    <Compile Include="MidiIn.cs" />
+    <Compile Include="Midi\MidiIn.cs" />
+    <Compile Include="Midi\MidiMessageParser.cs" />
+    <Compile Include="Midi\NoteOn.cs" />
+    <Compile Include="Midi\NoteOff.cs" />
     <Compile Include="RelativeViewport.cs" />
     <Compile Include="MusicScore.cs" />
     <Compile Include="Program.cs" />

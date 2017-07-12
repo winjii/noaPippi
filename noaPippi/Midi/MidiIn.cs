@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace noaPippi
+namespace noaPippi.Midi
 {
     class MidiIn
     {
         [StructLayout(LayoutKind.Sequential)]
-        public class MIDI
+        class MIDI
         {
             IntPtr m_pDeviceHandle;
             IntPtr m_pDeviceName;
@@ -31,20 +31,46 @@ namespace noaPippi
         }
         /* MIDI入力デバイスの数を調べる */
         [DllImport("MIDIIO.dll")]
-        static extern int MIDIIn_GetDeviceNum();
+        private static extern int MIDIIn_GetDeviceNum();
         /* MIDI入力デバイスの名前を調べる */
         [DllImport("MIDIIO.dll")]
-        static extern int MIDIIn_GetDeviceNameW(int lID, [Out]Char[] pszDeviceName, int lLen);
+        private static extern int MIDIIn_GetDeviceNameW(int lID, [Out]Char[] pszDeviceName, int lLen);
         /* MIDI入力デバイスを開く */
         [DllImport("MIDIIO.dll")]
-        static extern IntPtr MIDIIn_OpenW(Char[] pszDeviceName);
+        private static extern IntPtr MIDIIn_OpenW(Char[] pszDeviceName);
         /* MIDI入力デバイスを閉じる */
         [DllImport("MIDIIO.dll")]
-        static extern int MIDIIn_Close(IntPtr pMIDIDevice);
+        private static extern int MIDIIn_Close(IntPtr pMIDIDevice);
         /* MIDI入力デバイスから任意長のバイナリデータを入力する */
         [DllImport("MIDIIO.dll")]
-        static extern int MIDIIn_GetBytes(IntPtr pMIDIIn, [Out]Byte[] pBuf, int lLen);
+        private static extern int MIDIIn_GetBytes(IntPtr pMIDIIn, [Out]Byte[] pBuf, int lLen);
 
+        public int GetDeviceCount() => MIDIIn_GetDeviceNum();
+        public string GetDeviceName(int id)
+        {
+            Char[] name = new Char[256];
+            MIDIIn_GetDeviceNameW(id, name, 256);
+            string res = new string(name);
+            return res.TrimEnd('\0');
+        }
+        public MidiIn Create(string deviceName)
+        {
+            IntPtr ret = MIDIIn_OpenW(deviceName.ToCharArray());
+            if (ret == null) return null;
+            return new MidiIn(ret);
+        }
 
+        private IntPtr midi;
+        private Byte[] buf;
+        private MidiIn(IntPtr midi)
+        {
+            this.midi = midi;
+            buf = new Byte[1024];
+        }
+
+        ~MidiIn()
+        {
+            MIDIIn_Close(midi);
+        }
     }
 }
