@@ -11,7 +11,6 @@ namespace noaPippi
     /// <summary>
     /// (指定された描画領域に描画する(DrawableGameComponentの派生クラス)
     /// </summary>
-    //TODO: VirtualViewportのサポート
     abstract class SeparatedComponent : DrawableGameComponent
     {
         protected RelativeViewport viewport;
