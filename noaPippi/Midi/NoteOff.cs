@@ -8,6 +8,7 @@ namespace noaPippi.Midi
 {
     class NoteOff
     {
+        public byte Channel { get; }
         public byte Key { get; }
         public byte Level { get; }
         public NoteOff(byte key, byte level)
