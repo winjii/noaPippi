@@ -47,7 +47,7 @@ namespace MidiIOStudy {
         {
             Console.WriteLine(MIDIIn_GetDeviceNum());
             Char[] ret = new Char[100];
-            MIDIIn_GetDeviceNameW(0, ret, 100);
+            int a = MIDIIn_GetDeviceNameW(0, ret, 100);
             String name = new String(ret);
             name = name.Trim('\0');
             Console.WriteLine(name);
