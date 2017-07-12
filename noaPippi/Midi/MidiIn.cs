@@ -45,15 +45,15 @@ namespace noaPippi.Midi
         [DllImport("MIDIIO.dll")]
         private static extern int MIDIIn_GetBytes(IntPtr pMIDIIn, [Out]Byte[] pBuf, int lLen);
 
-        public int GetDeviceCount() => MIDIIn_GetDeviceNum();
-        public string GetDeviceName(int id)
+        public static int GetDeviceCount() => MIDIIn_GetDeviceNum();
+        public static string GetDeviceName(int id)
         {
             Char[] name = new Char[256];
             MIDIIn_GetDeviceNameW(id, name, 256);
             string res = new string(name);
             return res.TrimEnd('\0');
         }
-        public MidiIn Create(string deviceName)
+        public static MidiIn Create(string deviceName)
         {
             IntPtr ret = MIDIIn_OpenW(deviceName.ToCharArray());
             if (ret == null) return null;
@@ -62,12 +62,21 @@ namespace noaPippi.Midi
 
         private IntPtr midi;
         private Byte[] buf;
+        private const int BUF_SIZE = 1024;
         private MidiIn(IntPtr midi)
         {
             this.midi = midi;
-            buf = new Byte[1024];
+            buf = new Byte[BUF_SIZE];
         }
-
+        public List<object> GetMessage()
+        {
+            int size = MIDIIn_GetBytes(midi, buf, BUF_SIZE);
+            if (size == 0) return null;
+            List<byte> rawMessage = new List<byte>(size);
+            for (int i = 0; i < size; i++) rawMessage.Add(buf[i]);
+            MidiMessageParser parser = new MidiMessageParser();
+            return parser.Parse(rawMessage);
+        }
         ~MidiIn()
         {
             MIDIIn_Close(midi);
