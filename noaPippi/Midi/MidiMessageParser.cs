@@ -14,7 +14,7 @@ namespace noaPippi.Midi
             uint type = a;
 
             //ノートオフ
-            if ((type >> 4) == 0x8)
+            if ((type >> 4) == 0x8 || ((type >> 4) == 0x09 && (uint)c == 0))
             {
                 return new NoteOff(b, c);
             }

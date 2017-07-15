@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace noaPippi.Midi
 {
-    class MidiIn
+    public class MidiIn
     {
         [StructLayout(LayoutKind.Sequential)]
         class MIDI
