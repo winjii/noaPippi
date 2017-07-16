@@ -21,14 +21,14 @@ namespace noaPippi
             noteY = new double[128];
             int b = MyClef.NoteNumberOfLowestLine;
             noteY[b] = lowerLineY;
-            double[] d = { 0.5, 0.5, 0.5, 0.5, 1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1 };
+            double[] d = { 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1 };
             for (int i = b + 1; i < 128; i++)
             {
-                noteY[i] = noteY[i - 1] - d[(i - 1)%12]*lineDiff;
+                noteY[i] = noteY[i - 1] - d[(i - 1)%12]*lineDiff/2d;
             }
             for (int i = b - 1; i >= 0; i--)
             {
-                noteY[i] = noteY[i + 1] + d[i%12]*lineDiff;
+                noteY[i] = noteY[i + 1] + d[i%12]*lineDiff/2d;
             }
         }
 
@@ -45,11 +45,12 @@ namespace noaPippi
                 double y = lowerLineY - i*lineDiff;
                 lineRenderer.Draw(
                     spriteBatch,
-                    new Vector2(0, (float)viewport.RateToRelativeY(y)),
-                    new Vector2((float)viewport.GetAbsoluteWidth(), (float)viewport.RateToRelativeY(y)),
+                    new Vector2(0, (float)Viewport.RateToRelativeY(y)),
+                    new Vector2((float)Viewport.GetAbsoluteWidth(), (float)Viewport.RateToRelativeY(y)),
                     3,
                     Color.Black);
             }
+            test(spriteBatch);
         }
     }
 }

@@ -13,27 +13,27 @@ namespace noaPippi
     /// </summary>
     abstract class SeparatedComponent : DrawableGameComponent
     {
-        protected RelativeViewport viewport;
-        private SpriteBatch spriteBatch;
+        public RelativeViewport Viewport { get; }
+        public SpriteBatch SpriteBatch { get; private set; }
         public SeparatedComponent(Game game, RelativeViewport viewport) : base(game)
         {
-            this.viewport = viewport;
+            this.Viewport = viewport;
         }
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             base.LoadContent();
         }
         protected abstract void separatelyDraw(GameTime gameTime, SpriteBatch spriteBatch);
         public override void Draw(GameTime gameTime)
         {
-            Viewport tmp = spriteBatch.GraphicsDevice.Viewport;
-            spriteBatch.GraphicsDevice.Viewport = viewport.GetIntViewport();
-            spriteBatch.Begin();
-            separatelyDraw(gameTime, spriteBatch);
-            spriteBatch.End();
-            spriteBatch.GraphicsDevice.Viewport = tmp;
+            Viewport tmp = SpriteBatch.GraphicsDevice.Viewport;
+            SpriteBatch.GraphicsDevice.Viewport = Viewport.GetIntViewport();
+            SpriteBatch.Begin();
+            separatelyDraw(gameTime, SpriteBatch);
+            SpriteBatch.End();
+            SpriteBatch.GraphicsDevice.Viewport = tmp;
 
             base.Draw(gameTime);
         }
