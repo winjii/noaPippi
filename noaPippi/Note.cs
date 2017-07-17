@@ -25,9 +25,9 @@ namespace noaPippi
         public int Key { get; }
         public NoteType Type { get; }
         public bool IsDotted { get; }
-        private SeparatedComponent parent;
+        private StaffNotation parent;
         private Game game;
-        public Note(int key, NoteType type, bool isDotted, SeparatedComponent parent, Game game)
+        public Note(int key, NoteType type, bool isDotted, StaffNotation parent, Game game)
         {
             Key = key;
             Type = type;
@@ -78,13 +78,12 @@ namespace noaPippi
                     throw new Exception();
             }
         }
-        public void Draw(Vector2 pos, double lineDiff)
+        public void Draw(double x, double lineDiff)
         {
             Line2DRenderer lineRenderer = Line2DRenderer.GetInstance();
-            lineRenderer.Draw(parent.SpriteBatch, pos, pos + new Vector2(10, 0), 5, Color.Red);
             parent.SpriteBatch.Draw(
                 texture[(int)Type],
-                pos,
+                new Vector2((float)x, (float)parent.NoteToY(Key)),
                 null,
                 Color.White,
                 0f,

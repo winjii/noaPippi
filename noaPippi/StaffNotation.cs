@@ -32,9 +32,9 @@ namespace noaPippi
             }
         }
 
-        private double noteToY(int noteNumber)
+        public double NoteToY(int key)
         {
-            return noteY[noteNumber];
+            return noteY[key];
         }
 
         protected override void separatelyDraw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -50,7 +50,6 @@ namespace noaPippi
                     3,
                     Color.Black);
             }
-            test(spriteBatch);
         }
     }
 }
