@@ -63,7 +63,7 @@ namespace noaPippi
             switch (Type)
             {
                 case NoteType.div1:
-                    return (float)(parent.Viewport.RateToRelativeY(lineDiff)/texture[0].Height - 50);
+                    return (float)(parent.Viewport.RateToRelativeY(lineDiff)/(texture[0].Height - 50));
                 case NoteType.div2:
                     return (float)(parent.Viewport.RateToRelativeY(lineDiff)/(texture[1].Height - 50)*3.5f);
                 case NoteType.div4:

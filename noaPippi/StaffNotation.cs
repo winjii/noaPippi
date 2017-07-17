@@ -36,6 +36,12 @@ namespace noaPippi
         {
             return noteY[key];
         }
+        private void test(SpriteBatch spriteBatch)
+        {
+            Rest rest = new Rest(Rest.RestType.div4, this, Game);
+            rest.LoadContent();
+            rest.Draw(100, lineDiff);
+        }
 
         protected override void separatelyDraw(GameTime gameTime, SpriteBatch spriteBatch)
         {
@@ -50,6 +56,7 @@ namespace noaPippi
                     3,
                     Color.Black);
             }
+            test(spriteBatch);
         }
     }
 }
