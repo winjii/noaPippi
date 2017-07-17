@@ -49,7 +49,6 @@
     <Compile Include="Midi\MidiMessageParser.cs" />
     <Compile Include="Midi\NoteOn.cs" />
     <Compile Include="Midi\NoteOff.cs" />
-    <Compile Include="MusicXmlParser.cs" />
     <Compile Include="Note.cs" />
     <Compile Include="RelativeViewport.cs" />
     <Compile Include="MusicScore.cs" />
