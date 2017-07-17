@@ -9,11 +9,11 @@ namespace noaPippi.Midi
     class AfterTouch
     {
         public byte Channel { get; }
-        public byte Key { get; }
+        public byte NoteNumber { get; }
         public byte Level { get; }
-        public AfterTouch(byte key, byte level)
+        public AfterTouch(byte noteNumber, byte level)
         {
-            Key = key;
+            NoteNumber = noteNumber;
             Level = level;
         }
     }

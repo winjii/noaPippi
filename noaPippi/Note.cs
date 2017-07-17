@@ -12,24 +12,45 @@ namespace noaPippi
     class Note
     {
         public enum NoteType{
-            div1,
-            div2,
-            div4,
-            div8,
-            div16,
-            div32
+            Div1,
+            Div2,
+            Div4,
+            Div8,
+            Div16,
+            Div32
+        }
+        public enum Accidentals
+        {
+            None = 0,
+            Natural = 0,
+            Sharp = 1,
+            Flat = -1
+        }
+        public enum PitchName
+        {
+            C = 0,
+            D = 2,
+            E = 4,
+            F = 5,
+            G = 7,
+            A = 9,
+            B = 11
         }
         private static Texture2D[] texture;
         private static Vector2[] origin;
 
-        public int Key { get; }
+        public PitchName Pitch { get; }
+        public int Octave { get; }
+        public Accidentals Accidental { get; }
         public NoteType Type { get; }
         public bool IsDotted { get; }
         private StaffNotation parent;
         private Game game;
-        public Note(int key, NoteType type, bool isDotted, StaffNotation parent, Game game)
+        public Note(NoteType type, PitchName pitch, int octave, bool isDotted, StaffNotation parent, Game game, Accidentals accidental = Accidentals.None)
         {
-            Key = key;
+            Pitch = pitch;
+            Accidental = accidental;
+            Octave = octave;
             Type = type;
             IsDotted = isDotted;
             this.parent = parent;
@@ -62,28 +83,32 @@ namespace noaPippi
         {
             switch (Type)
             {
-                case NoteType.div1:
+                case NoteType.Div1:
                     return (float)(parent.Viewport.RateToRelativeY(lineDiff)/(texture[0].Height - 50));
-                case NoteType.div2:
+                case NoteType.Div2:
                     return (float)(parent.Viewport.RateToRelativeY(lineDiff)/(texture[1].Height - 50)*3.5f);
-                case NoteType.div4:
+                case NoteType.Div4:
                     return (float)(parent.Viewport.RateToRelativeY(lineDiff)/(texture[2].Height - 50)*3.5f);
-                case NoteType.div8:
+                case NoteType.Div8:
                     return (float)(parent.Viewport.RateToRelativeY(lineDiff)/(texture[3].Height - 50)*3.5f);
-                case NoteType.div16:
+                case NoteType.Div16:
                     return (float)(parent.Viewport.RateToRelativeY(lineDiff)/(texture[4].Height - 50)*3.5f);
-                case NoteType.div32:
+                case NoteType.Div32:
                     return (float)(parent.Viewport.RateToRelativeY(lineDiff)/(texture[5].Height - 50)*3.5f);
                 default:
                     throw new Exception();
             }
+        }
+        public int getKey()
+        {
+            return (int)Pitch + 12*Octave + (int)Accidental;
         }
         public void Draw(double x, double lineDiff)
         {
             Line2DRenderer lineRenderer = Line2DRenderer.GetInstance();
             parent.SpriteBatch.Draw(
                 texture[(int)Type],
-                new Vector2((float)x, (float)parent.NoteToY(Key)),
+                new Vector2((float)x, (float)parent.NoteToY(getKey())),
                 null,
                 Color.White,
                 0f,

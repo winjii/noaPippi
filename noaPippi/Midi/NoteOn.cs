@@ -9,11 +9,11 @@ namespace noaPippi.Midi
     class NoteOn
     {
         public byte Channel { get; }
-        public byte Key { get; }
+        public byte NoteNumber { get; }
         public byte Level { get; }
-        public NoteOn(byte key, byte level)
+        public NoteOn(byte noteNumber, byte level)
         {
-            Key = key;
+            NoteNumber = noteNumber;
             Level = level;
         }
     }
