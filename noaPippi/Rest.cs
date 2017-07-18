@@ -14,6 +14,7 @@ namespace noaPippi
         public enum RestType
         {
             div1 = 0,
+            div2 = 1,
             div4 = 2,
             div8 = 3,
             div16 = 4
@@ -36,6 +37,7 @@ namespace noaPippi
             {
                 texture = new Texture2D[6];
                 texture[0] = game.Content.Load<Texture2D>("rest1");
+                texture[1] = game.Content.Load<Texture2D>("rest2");
                 texture[2] = game.Content.Load<Texture2D>("rest4");
                 texture[3] = game.Content.Load<Texture2D>("rest8");
                 texture[4] = game.Content.Load<Texture2D>("rest16");
@@ -44,6 +46,7 @@ namespace noaPippi
             {
                 origin = new Vector2[6];
                 origin[0] = new Vector2(texture[0].Width/2f, 0);
+                origin[1] = new Vector2(texture[1].Width/2f, texture[1].Height);
                 for (int i = 2; i < 5; i++)
                 {
                     origin[i] = new Vector2(texture[i].Width/2f, texture[i].Height/2f);
@@ -56,6 +59,8 @@ namespace noaPippi
             {
                 case RestType.div1:
                     return (float)(parent.Viewport.RateToRelativeY(lineDiff)/texture[0].Height*0.25);
+                case RestType.div2:
+                    return (float)(parent.Viewport.RateToRelativeY(lineDiff)/texture[1].Height*0.25);
                 case RestType.div4:
                     return (float)(parent.Viewport.RateToRelativeY(lineDiff)/texture[2].Height*2.5f);
                 case RestType.div8:
