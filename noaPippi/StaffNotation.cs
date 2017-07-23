@@ -14,16 +14,16 @@ namespace noaPippi
         double lowerLineY = 0.75;
         public readonly double LineDiff = 0.5/4.0;
         public Clef MyClef { get; }
-        private List<MeasurableElementRenderer> renderers;
-        public List<MeasurableElement> Measure {
-            get => renderers.ConvertAll(v => v.Element);
-            set => renderers = value.ConvertAll(v => v.CreateRenderer(this, Game));
+        private List<List<MeasurableElementRenderer>> renderers;
+        public List<List<MeasurableElement>> Measures {
+            get => renderers.ConvertAll(list => list.ConvertAll(v => v.Element));
+            set => renderers = value.ConvertAll(list => list.ConvertAll(v => v.CreateRenderer(this, Game)));
         }
         private double[] noteY;
 
         public StaffNotation(Clef.ClefType clefType, Game game, RelativeViewport viewport) : base(game, viewport)
         {
-            renderers = new List<MeasurableElementRenderer>();
+            renderers = new List<List<MeasurableElementRenderer>>();
             MyClef = new Clef(clefType);
             noteY = new double[128];
             int b = MyClef.NoteNumberOfLowestLine;
@@ -68,19 +68,32 @@ namespace noaPippi
                     3,
                     Color.Black);
             }
-            test(spriteBatch);
-            for (int i = 1; i < 4; i++)
+            for (int i = 0; i < renderers.Count; i++)
             {
-                lineRenderer.Draw(
-                    spriteBatch,
-                    new Vector2(
-                        (float)Viewport.RateToRelativeX(0.25*i),
-                        (float)Viewport.RateToRelativeY(lowerLineY)),
-                    new Vector2(
-                        (float)Viewport.RateToRelativeX(0.25*i),
-                        (float)Viewport.RateToRelativeY(lowerLineY - LineDiff*4)),
-                    2,
-                    Color.Black);
+                double l = i/(double)renderers.Count;
+                double all = 1.0*renderers.Count;
+                double cnt = 0;
+                double space = Viewport.RateToRelativeY(LineDiff)*2;
+                for (int j = 0; j < renderers[i].Count; j++)
+                {
+                    double duration = renderers[i][j].Element.GetDuration();
+                    renderers[i][j].Draw(Viewport.RateToRelativeX(l + cnt) + space);
+                    if (renderers[i][j].Element is Note && ((Note)renderers[i][j].Element).IsOverlaid) continue;
+                    cnt += duration/all;
+                }
+                if (i > 0)
+                {
+                    lineRenderer.Draw(
+                        spriteBatch,
+                        new Vector2(
+                            (float)Viewport.RateToRelativeX(i/(double)renderers.Count),
+                            (float)Viewport.RateToRelativeY(lowerLineY)),
+                        new Vector2(
+                            (float)Viewport.RateToRelativeX(i/(double)renderers.Count),
+                            (float)Viewport.RateToRelativeY(lowerLineY - LineDiff*4)),
+                        2,
+                        Color.Black);
+                }
             }
         }
     }

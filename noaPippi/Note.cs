@@ -42,17 +42,19 @@ namespace noaPippi
         public Accidentals Accidental { get; }
         public NoteType Type { get; }
         public bool IsDotted { get; }
-        public Note(NoteType type, PitchName pitch, int octave, bool isDotted, Accidentals accidental = Accidentals.None)
+        public bool IsOverlaid { get; }
+        public Note(NoteType type, PitchName pitch, int octave, bool isDotted, Accidentals accidental, bool isOverlaid)
         {
             Pitch = pitch;
             Accidental = accidental;
             Octave = octave;
             Type = type;
             IsDotted = isDotted;
+            IsOverlaid = isOverlaid;
         }
         public int getKey()
         {
-            return (int)Pitch + 12*Octave + (int)Accidental;
+            return (int)Pitch + 12*(Octave + 1) + (int)Accidental;
         }
         override public double GetDuration() => (IsDotted ? 1.5 : 1.0)/(1 << (int)Type);
         public override MeasurableElementRenderer CreateRenderer(StaffNotation parent, Game game)

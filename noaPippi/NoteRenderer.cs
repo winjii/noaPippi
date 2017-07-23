@@ -68,10 +68,11 @@ namespace noaPippi
         override public void Draw(double x)
         {
             double lineDiff = parent.LineDiff;
+            float y = (float)parent.Viewport.RateToRelativeY(parent.NoteToY(Note.getKey()));
             Line2DRenderer lineRenderer = Line2DRenderer.GetInstance();
             parent.SpriteBatch.Draw(
                 texture[(int)Note.Type],
-                new Vector2((float)x, (float)parent.NoteToY(Note.getKey())),
+                new Vector2((float)x, y),
                 null,
                 Color.White,
                 0f,

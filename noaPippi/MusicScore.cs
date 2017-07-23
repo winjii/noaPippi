@@ -40,8 +40,8 @@ namespace noaPippi
             staffNotationF = new StaffNotation[4];
             for (int i = 0; i < 4; i++)
             {
-                RelativeViewport vG = viewport.AddFormedChild(0.25, true, false);
-                RelativeViewport vF = viewport.AddFormedChild(0.25, true, false);
+                RelativeViewport vG = viewport.AddFormedChild(1/8.0, true, false);
+                RelativeViewport vF = viewport.AddFormedChild(1/8.0, true, false);
                 staffNotationG[i] = new StaffNotation(Clef.ClefType.G, game, vG);
                 staffNotationF[i] = new StaffNotation(Clef.ClefType.F, game, vF);
                 game.Components.Add(staffNotationG[i]);
@@ -62,13 +62,17 @@ namespace noaPippi
                 if (measure.Name != "measure") continue;
                 List<MeasurableElement> measureG = new List<MeasurableElement>();
                 List<MeasurableElement> measureF = new List<MeasurableElement>();
-                foreach (XmlNode note in measure)
+                for (int noteIndex = 0; noteIndex < measure.ChildNodes.Count; noteIndex++)
                 {
+                    XmlNode note = measure.ChildNodes[noteIndex];
+                    XmlNode nextNote = (noteIndex + 1 < measure.ChildNodes.Count) ?
+                        measure.ChildNodes[noteIndex + 1] :
+                        null;
                     if (note.Name != "note") continue;
                     int duration = int.Parse(note["duration"].InnerText);
                     bool isDotted = false;
                     int pow = 0;
-                    for (int i = 1; ; i++)
+                    for (int i = 0; ; i++)
                     {
                         int d = 4*divisions/(1 << i);
                         if (d*3 == duration*2) isDotted = true;
@@ -101,7 +105,8 @@ namespace noaPippi
                                     break;
                             }
                         }
-                        formedNote = new Note((Note.NoteType)pow, pitchName, octave, isDotted, accidental);
+                        bool isOverlaid = (nextNote != null && nextNote["chord"] != null);
+                        formedNote = new Note((Note.NoteType)pow, pitchName, octave, isDotted, accidental, isOverlaid);
                     }
                     else
                     {
@@ -123,8 +128,8 @@ namespace noaPippi
             }
             for (int i = 0; i < 4; i++)
             {
-                staffNotationG[i].Measure = measuresG[i];
-                staffNotationF[i].Measure = measuresF[i];
+                staffNotationG[i].Measures = measuresG.GetRange(i*4, 4);
+                staffNotationF[i].Measures = measuresF.GetRange(i*4, 4);
             }
         }
         protected override void LoadContent()
