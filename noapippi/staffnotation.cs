@@ -12,14 +12,18 @@ namespace noaPippi
     class StaffNotation : SeparatedComponent
     {
         double lowerLineY = 0.75;
-        double lineDiff = 0.5/4.0;
+        public readonly double LineDiff = 0.5/4.0;
         public Clef MyClef { get; }
-        List<List<object>> measures;
+        private List<MeasurableElementRenderer> renderers;
+        public List<MeasurableElement> Measure {
+            get => renderers.ConvertAll(v => v.Element);
+            set => renderers = value.ConvertAll(v => v.CreateRenderer(this, Game));
+        }
         private double[] noteY;
 
         public StaffNotation(Clef.ClefType clefType, Game game, RelativeViewport viewport) : base(game, viewport)
         {
-            measures = new List<List<object>>();
+            renderers = new List<MeasurableElementRenderer>();
             MyClef = new Clef(clefType);
             noteY = new double[128];
             int b = MyClef.NoteNumberOfLowestLine;
@@ -27,31 +31,19 @@ namespace noaPippi
             double[] d = { 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1 };
             for (int i = b + 1; i < 128; i++)
             {
-                noteY[i] = noteY[i - 1] - d[(i - 1)%12]*lineDiff/2d;
+                noteY[i] = noteY[i - 1] - d[(i - 1)%12]*LineDiff/2d;
             }
             for (int i = b - 1; i >= 0; i--)
             {
-                noteY[i] = noteY[i + 1] + d[i%12]*lineDiff/2d;
+                noteY[i] = noteY[i + 1] + d[i%12]*LineDiff/2d;
             }
         }
-        public void Load(XmlDocument doc)
+        protected override void LoadContent()
         {
-            this.measures = new List<List<object>>();
-            XmlNodeList measures = doc.SelectNodes("part/measure");
-            XmlNode attributes = measures[0]["attributes"];
-            int divisions = int.Parse(attributes["divisions"].InnerText);
-            //TODO: 調に対応
-            //XmlNode noteNumber = attributes.SelectSingleNode("noteNumber");
-            //TODO: 拍子に対応
-            //XmlNode time = attributes.SelectSingleNode("time");
-            foreach (XmlNode measure in measures)
-            {
-                foreach (XmlNode note in measure)
-                {
-                    XmlNode pitch = note["pitch"];
-                    pitch[]
-                }
-            }
+            base.LoadContent();
+            //TODO: 初期化の責任がこのクラスにあるのはおかしい
+            RestRenderer.LoadContent(Game);
+            NoteRenderer.LoadContent(Game);
         }
         public double NoteToY(int noteNumber)
         {
@@ -59,9 +51,8 @@ namespace noaPippi
         }
         private void test(SpriteBatch spriteBatch)
         {
-            Rest rest = new Rest(Rest.RestType.div4, this, Game);
-            rest.LoadContent();
-            rest.Draw(100, lineDiff);
+            MeasurableElementRenderer rest = new Rest(Rest.RestType.div4).CreateRenderer(this, Game);
+            rest.Draw(100);
         }
 
         protected override void separatelyDraw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -69,7 +60,7 @@ namespace noaPippi
             Line2DRenderer lineRenderer = Line2DRenderer.GetInstance();
             for (int i = 0; i < 5; i++)
             {
-                double y = lowerLineY - i*lineDiff;
+                double y = lowerLineY - i*LineDiff;
                 lineRenderer.Draw(
                     spriteBatch,
                     new Vector2(0, (float)Viewport.RateToRelativeY(y)),
@@ -78,6 +69,19 @@ namespace noaPippi
                     Color.Black);
             }
             test(spriteBatch);
+            for (int i = 1; i < 4; i++)
+            {
+                lineRenderer.Draw(
+                    spriteBatch,
+                    new Vector2(
+                        (float)Viewport.RateToRelativeX(0.25*i),
+                        (float)Viewport.RateToRelativeY(lowerLineY)),
+                    new Vector2(
+                        (float)Viewport.RateToRelativeX(0.25*i),
+                        (float)Viewport.RateToRelativeY(lowerLineY - LineDiff*4)),
+                    2,
+                    Color.Black);
+            }
         }
     }
 }
